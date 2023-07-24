@@ -3,19 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./src/index.ts",
     "lint": "eslint . --ext .ts",
     "scan": "sonar-scanner.bat",
-    "test": "test"
+    "test": "test",
+    "prebuild": "if exist dist rd /s /q dist",
+    "build": "esbuild ./src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "postbuild": "cd dist && tar.exe -a -c -f index.zip index.js*",
+    "invoke": "ts-node -e \"console.log(require('./src/index.ts').handler(\"{status:401}\"));\""
   },
   "dependencies": {
     "axios": "^1.4.0",
     "axios-retry": "^3.5.1"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
     "@types/axios": "^0.14.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "esbuild": "^0.18.16",
     "eslint": "^8.45.0",
     "eslint-config-standard-with-typescript": "^37.0.0",
     "eslint-plugin-import": "^2.27.5",
@@ -23,8 +28,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^5.1.6"
   }
 }
