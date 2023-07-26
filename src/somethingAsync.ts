@@ -9,7 +9,7 @@ export async function saveIt(str: string): Promise<string> {
   return content;
 }
 
-async function stall(stallTime = 10000) {
+async function stall(stallTime = 1000) {
   console.log('Waiting.')
   await new Promise(resolve => setTimeout(resolve, stallTime));
 }
